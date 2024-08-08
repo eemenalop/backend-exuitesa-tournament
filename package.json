@@ -1,5 +1,5 @@
 {
-  "name": "backend-exu-tournament",
+  "name": "backend-exuitesa-tournament",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.44.4",
+    "dotenv": "^16.4.5"
+  }
 }
