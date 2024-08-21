@@ -16,6 +16,12 @@ exports.handler = async (event) => {
             .eq('username', username)
             .single();
 
+        const checkResult = checkData(user, userError);
+
+        if (checkResult.statusCode !== 200) {
+            return checkResult; // Si checkData detectó un problema, se retorna su respuesta
+        }
+
         //Check User
         if (userError || !user) {
             return {
