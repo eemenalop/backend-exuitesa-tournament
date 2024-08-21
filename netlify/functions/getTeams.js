@@ -1,4 +1,5 @@
-const supabase = require('../../config.js')
+const supabase = require('../../config.js');
+const { checkData } = require('./checkData.js');
 
 exports.handler = async (event) => {
   try {
@@ -11,13 +12,8 @@ exports.handler = async (event) => {
     if (error) throw error;
 
     // Devuelve una respuesta exitosa con los datos obtenidos en formato JSON
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+    return checkData(data, error);
+
   } catch (error) {
     // Si ocurre un error, devuelve una respuesta con el código de error 500
     console.error('Error fetching teams:', error);
