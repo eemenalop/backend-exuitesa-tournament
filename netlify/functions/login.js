@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const supabase = require('../../config.js');
+const checkData = require('./checkData.js')
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -51,7 +52,7 @@ exports.handler = async (event) => {
 
     } catch (error) {
         return {
-            sstatusCode: 500,
+            statusCode: 500,
             body: JSON.stringify({ error: error.message })
         }
     }

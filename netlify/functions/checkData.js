@@ -14,6 +14,8 @@ function checkData(data, error, isPostRequest = false) {
     }
 
     if (!data || data.length === 0) {
+        console.log(data)
+
         return {
             statusCode: 404,
             body: JSON.stringify({ error: "No se encontraron datos en la DB" })
