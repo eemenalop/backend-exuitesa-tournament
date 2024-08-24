@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const supabase = require('../../config.js');
-const checkData = require('./checkData.js')
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -17,11 +16,7 @@ exports.handler = async (event) => {
             .eq('username', username)
             .single();
 
-        const checkResult = checkData(user, userError);
 
-        if (checkResult.statusCode !== 200) {
-            return checkResult; // Si checkData detectó un problema, se retorna su respuesta
-        }
 
         //Check User
         if (userError || !user) {
@@ -47,7 +42,7 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ token })
+            body: JSON.stringify({ username, token })
         }
 
     } catch (error) {
