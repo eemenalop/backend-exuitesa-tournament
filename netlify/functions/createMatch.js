@@ -13,6 +13,47 @@ exports.handler = async (event) => {
     try {
         const { team1_id, team2_id, score_team1, score_team2, match_date_time, mode, location, match_mvp } = JSON.parse(event.body)
 
+        //checking the winning team
+        let winningTeamId;
+
+        if (score_team1 > score_team2) {
+            winningTeamId = team1_id;
+        } else if (score_team2 > score_team1) {
+            winningTeamId = team2_id;
+        } else {
+
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ Error: 'El partido no puede terminar empate' })
+            }
+        }
+
+        //checking that the inserted MVP is from the winning team
+        const { data: mvpData, error: mvpError } = await supabase
+            .from('players')
+            .select('team_id')
+            .eq('player_id', match_mvp);
+
+        if (mvpError) {
+            throw new Error(mvpError.message)
+        }
+
+        if (!mvpData || mvpData.length === 0) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'El jugador no existe' })
+            };
+        }
+
+        const mvpTeamId = mvpData[0].team_id;
+
+        if (mvpTeamId !== winningTeamId) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'El MVP debe ser del equipo ganador' })
+            };
+        }
+
         const { data: matchData, error: matchError } = await supabase
             .from('matches')
             .insert([
@@ -34,44 +75,11 @@ exports.handler = async (event) => {
         }
 
         const matchId = matchData[0].match_id;
-        /**
-        const { data: playersData, error: playersError } = await supabase
-            .from('players')
-            .select('player_id')
-            .in('team_id', [team1_id, team2_id]);
 
-        if (playersError) {
-            throw new Error(playersError.message);
-        }
-
-        const playerStats = playersData.map((player) => ({
-            match_id: matchId,
-            player_id: player.player_id,
-            points: 0,
-            assists: 0,
-            rebounds: 0,
-            steals: 0,
-            blocks: 0,
-            turnovers: 0,
-            fga: 0,
-            fgm: 0,
-            threeptm: 0,
-            threepta: 0,
-            ftm: 0,
-            fta: 0,
-        }));
-
-        const { data: statsData, error: statsError } = await supabase
-            .from('players_matches_stats')
-            .insert(playerStats);
-
-        if (statsError) {
-            throw new Error(statsError.message);
-        }*/
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Match and player stats created successfully', matchId }),
+            body: JSON.stringify({ message: 'Match created successfully', matchId }),
         };
 
     } catch (error) {
