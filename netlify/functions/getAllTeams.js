@@ -1,7 +1,7 @@
 const supabase = require('../../config.js');
 const { checkData } = require('./checkData.js');
 
-exports.handler = async (event) => {
+exports.handler = async () => {
   try {
     const { data, error } = await supabase
       .from('teams')
