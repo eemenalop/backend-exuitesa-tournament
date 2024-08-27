@@ -11,7 +11,8 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { team1_id, team2_id, score_team1, score_team2, match_date_time, mode, location, match_mvp } = JSON.parse(event.body)
+        const { team1_id, team2_id, score_team1, score_team2,
+            match_date_time, mode, match_type, location, match_mvp } = JSON.parse(event.body)
 
         //checking the winning team
         let winningTeamId;
@@ -64,6 +65,7 @@ exports.handler = async (event) => {
                     score_team2,
                     match_date_time,
                     mode,
+                    match_type,
                     location,
                     match_mvp
                 }
