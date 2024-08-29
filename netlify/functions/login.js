@@ -6,6 +6,17 @@ const jwtSecret = process.env.JWT_SECRET;
 
 
 exports.handler = async (event) => {
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'POST',
+            },
+            body: JSON.stringify({}),
+        };
+    }
     try {
 
         const { username, password } = JSON.parse(event.body);
@@ -16,12 +27,14 @@ exports.handler = async (event) => {
             .eq('username', username)
             .single();
 
-
-
         //Check User
         if (userError || !user) {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ error: 'Usuario no encontrado' }),
             }
         }
@@ -31,23 +44,34 @@ exports.handler = async (event) => {
         if (!isPasswordValid) {
             return {
                 statusCode: 401,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ error: 'Contraseña Incorrecta' })
             }
         }
 
         //Create Token
         const token = jwt.sign({ id: user.id, role: user.role }, jwtSecret, {
-            expiresIn: '1h'
+            expiresIn: '5s'
         });
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'POST',
+            },
             body: JSON.stringify({ username, token })
         }
 
     } catch (error) {
         return {
             statusCode: 500,
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
             body: JSON.stringify({ error: error.message })
         }
     }
