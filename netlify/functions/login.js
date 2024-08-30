@@ -35,7 +35,7 @@ exports.handler = async (event) => {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ error: 'Usuario no encontrado' }),
+                body: JSON.stringify({ error: 'Credenciales invalidas' }),
             }
         }
         //Check Password
@@ -48,13 +48,13 @@ exports.handler = async (event) => {
                     'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ error: 'Contraseña Incorrecta' })
+                body: JSON.stringify({ error: 'Credenciales invalidas' })
             }
         }
 
         //Create Token
         const token = jwt.sign({ id: user.id, role: user.role }, jwtSecret, {
-            expiresIn: '5s'
+            expiresIn: '1h'
         });
 
         return {
