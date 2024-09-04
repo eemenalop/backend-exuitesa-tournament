@@ -1,53 +1,59 @@
-const supabase = require('../../config.js')
+const supabase = require('../../config.js');
 
-exports.handler = async () => {
-
+exports.handler = async (event) => {
     try {
-        const { data: poinstData, error: pointsError } = await supabase.rpc('calculate_points_per_game')
-            .limit(10);
-        if (pointsError) throw pointsError;
+        // Obtenemos los parámetros desde la query string
+        const matchType = event.queryStringParameters.match_type;
+        const statType = event.queryStringParameters.stat_type;
 
-        const { data: assistsData, error: assistsError } = await supabase.rpc('calculate_assists_per_game')
-            .limit(10);
-        if (assistsError) throw assistsError;
+        if (!matchType || !statType) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'match_type and stat_type are required' }),
+            };
+        }
 
-        const { data: reboundsData, error: reboundsError } = await supabase.rpc('calculate_rebounds_per_game')
-            .limit(10);
-        if (reboundsError) throw reboundsError;
+        // Llamamos a la función RPC con los parámetros necesarios
+        const { data: statsData, error } = await supabase.rpc('calculate_stats_per_game', {
+            match_type_input: matchType,
+            stat_type_input: statType
+        }).limit(10);
 
-        const { data: stealsData, error: stealsError } = await supabase.rpc('calculate_steals_per_game')
-            .limit(10);
-        if (stealsError) throw stealsError;
+        if (error) throw error;
 
-        const { data: blocksData, error: blocksError } = await supabase.rpc('calculate_blocks_per_game')
-            .limit(10);
-        if (blocksError) throw blocksError;
+        const roundStat = (stat) => {
+            return {
+                ...stat,
+                stat_per_game: Math.round(stat.stat_per_game * 10) / 10 // Redondeo a 2 decimales
+            };
+        };
 
+        // Agregamos el ranking en el frontend
         const addRanking = (data) => data.map((item, index) => ({
             rank: index + 1,
-            ...item
+            ...roundStat(item)
         }));
 
-        const response = {
-            points: { data: addRanking(poinstData) },
-            assists: { data: addRanking(assistsData) },
-            rebounds: { data: addRanking(reboundsData) },
-            steals: { data: addRanking(stealsData) },
-            blocks: { data: addRanking(blocksData) }
-        }
-
+        // Devolvemos la respuesta con los datos y rankings
         return {
             statusCode: 200,
-            body: JSON.stringify(response.steals)
-        }
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
+            body: JSON.stringify(addRanking(statsData)),
+        };
 
     } catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: error.message })
-        }
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
+            body: JSON.stringify({ error: error.message }),
+        };
     }
-
-
-
-}
+};
