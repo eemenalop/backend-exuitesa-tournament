@@ -5,6 +5,7 @@ exports.handler = async (event) => {
         // Obtenemos los parámetros desde la query string
         const matchType = event.queryStringParameters.match_type;
         const teamId = event.queryStringParameters.team_id;
+        const playerId = event.queryStringParameters.player_id;
 
         if (!matchType) {
             return {
@@ -15,7 +16,8 @@ exports.handler = async (event) => {
         
         const { data: statsData, error } = await supabase.rpc('player_stat_per_game', {
             match_type_input: matchType,
-            team_id_input: teamId
+            team_id_input: teamId,
+            player_id_input: playerId
         })
 
         if (error) throw error;
