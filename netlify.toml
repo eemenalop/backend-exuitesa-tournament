@@ -1,3 +1,10 @@
 [dev]
   port = 4000
 
+[build]
+command = ""
+publish = "dist"
+functions = "netlify/functions"
+
+
+
