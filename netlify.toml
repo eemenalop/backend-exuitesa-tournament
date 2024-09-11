@@ -3,7 +3,6 @@
 
 [build]
 command = ""
-publish = "build"
 functions = "netlify/functions"
 
 
