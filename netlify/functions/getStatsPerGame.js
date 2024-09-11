@@ -10,10 +10,15 @@ exports.handler = async (event) => {
         if (!matchType) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ error: 'match_type is required' }),
             };
         }
-        
+
         const { data: statsData, error } = await supabase.rpc('player_stat_per_game', {
             match_type_input: matchType,
             team_id_input: teamId,

@@ -4,6 +4,11 @@ exports.handler = async (event) => {
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: 'Method not Allowed' })
         }
     }
@@ -29,12 +34,22 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ message: 'Player created successfully', playerId })
         }
 
     } catch (error) {
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: error.message }),
         }
     }

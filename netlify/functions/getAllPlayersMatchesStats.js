@@ -16,6 +16,11 @@ exports.handler = async () => {
     } catch (error) {
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: error.message })
         }
     }

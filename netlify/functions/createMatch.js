@@ -6,6 +6,11 @@ exports.handler = async (event) => {
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: 'Method not allowed' })
         }
     }
@@ -25,6 +30,11 @@ exports.handler = async (event) => {
 
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ Error: 'El partido no puede terminar empate' })
             }
         }
@@ -42,6 +52,11 @@ exports.handler = async (event) => {
         if (!mvpData || mvpData.length === 0) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ error: 'El jugador no existe' })
             };
         }
@@ -51,6 +66,11 @@ exports.handler = async (event) => {
         if (mvpTeamId !== winningTeamId) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ error: 'El MVP debe ser del equipo ganador' })
             };
         }
@@ -81,12 +101,22 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ message: 'Match created successfully', matchId }),
         };
 
     } catch (error) {
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: error.message }),
         }
 

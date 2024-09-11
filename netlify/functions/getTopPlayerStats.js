@@ -9,6 +9,11 @@ exports.handler = async (event) => {
         if (!matchType || !statType) {
             return {
                 statusCode: 400,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ error: 'match_type and stat_type are required' }),
             };
         }

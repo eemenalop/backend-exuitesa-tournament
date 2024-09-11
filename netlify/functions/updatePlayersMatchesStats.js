@@ -4,6 +4,11 @@ exports.handler = async (event) => {
     if (event.httpMethod !== 'PUT') {
         return {
             statusCode: 405,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: 'Method not Allowed' })
         }
     }
@@ -35,6 +40,11 @@ exports.handler = async (event) => {
 
     return {
         statusCode: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
         body: JSON.stringify({ message: 'Stats match updated successfully' })
     }
 
