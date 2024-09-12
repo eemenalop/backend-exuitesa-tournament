@@ -9,12 +9,12 @@ exports.handler = async (event) => {
         if (team_id) {
             ({ data, error } = await supabase
                 .from('players')
-                .select('*')
+                .select('*, teams(team_name)')
                 .eq('team_id', team_id))
         } else {
             ({ data, error } = await supabase
                 .from('players')
-                .select('*'));
+                .select('*, teams(team_name)'));
         }
 
 

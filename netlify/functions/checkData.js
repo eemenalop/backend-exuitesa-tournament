@@ -4,6 +4,11 @@ function checkData(data, error) {
     if (error) {
         return {
             statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+            },
             body: JSON.stringify({ error: "Error de conexion con la base de datos o consulta incorrecta" }),
 
         }

@@ -1,13 +1,7 @@
 [dev]
   port = 4000
 
-[build]
-functions = "netlify/functions"
 
-[[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
 
 
 
