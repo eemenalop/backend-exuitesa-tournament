@@ -26,23 +26,28 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { team_id, player_name, position, number, player_photo } = JSON.parse(event.body)
+        const { team_name, logo_url } = JSON.parse(event.body);
 
-        const { data: playerData, error: playerError } = await supabase
-            .from('players')
+        if (!team_name) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Team name is required' })
+            };
+        }
+
+        const { data: teamData, error: teamError } = await supabase
+            .from('teams')
             .insert([{
-                team_id,
-                player_name,
-                position,
-                number,
-                player_photo
+                team_name,
+                logo_url
             }])
-            .select('player_id');
+            .select('team_id');
 
-        const playerId = playerData[0].player_id;
+        const teamId = teamData[0].team_id;
 
-        if (playerError) {
-            throw new Error(playerError.message)
+        if (teamError) {
+            throw new Error(teamError.message)
         }
 
         return {
@@ -52,7 +57,7 @@ exports.handler = async (event) => {
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            body: JSON.stringify({ message: 'Player created successfully', playerId })
+            body: JSON.stringify({ message: 'Team created successfully', teamId })
         }
 
     } catch (error) {
