@@ -1,15 +1,15 @@
-[build]
-  publish = "dist"
-  functions = "netlify/functions"
-
 [dev]
-  framework = "vite"
   port = 4000
 
+[build]
+  functions = "netlify/functions"
+  publish = "dist"  # Asegúrate de especificar correctamente el directorio de salida del frontend, si es necesario
+
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
   status = 200
+
 
 
 
