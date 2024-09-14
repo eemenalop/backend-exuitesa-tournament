@@ -1,7 +1,15 @@
+[build]
+  publish = "dist"
+  functions = "netlify/functions"
+
 [dev]
+  framework = "vite"
   port = 4000
 
-[build]
-  functions = "netlify/functions" 
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 
 
