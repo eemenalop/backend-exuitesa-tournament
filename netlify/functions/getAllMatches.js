@@ -15,20 +15,28 @@ exports.handler = async (event) => {
         };
     }
 
-    const matcheType = event.queryStringParameters.match_type;
+    const matchType = event.queryStringParameters.match_type;
     try {
         let data;
         let error;
 
-        if (matcheType) {
+        if (matchType) {
         ({ data, error } = await supabase
             .from('matches')
-            .select('*')
-            .eq('match_type', matcheType));
+            .select(`
+                    *,
+                    team1:team1_id (team_name),
+                    team2:team2_id (team_name)
+                `)
+            .eq('match_type', matchType));
         } else {
         ({ data, error } = await supabase
             .from('matches')
-            .select('*'));
+            .select(`
+                    *,
+                    team1:team1_id (team_name),
+                    team2:team2_id (team_name)
+                `));
         }
 
         if (error) throw error;

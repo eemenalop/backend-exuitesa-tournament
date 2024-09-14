@@ -16,16 +16,18 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { team1_id, team2_id, score_team1, score_team2,
-            match_date_time, mode, match_type, location, match_mvp } = JSON.parse(event.body)
+        const { team1_id, team2_id, score_team1, score_team2, 
+            match_date_time, mode, location, match_mvp, match_type } = JSON.parse(event.body)
 
         //checking the winning team
-        let winningTeamId;
+        let winnerId, loserId;
 
         if (score_team1 > score_team2) {
-            winningTeamId = team1_id;
+            winnerId = team1_id;
+            loserId = team2_id;
         } else if (score_team2 > score_team1) {
-            winningTeamId = team2_id;
+            winnerId = team2_id;
+            loserId = team1_id
         } else {
 
             return {
@@ -63,7 +65,7 @@ exports.handler = async (event) => {
 
         const mvpTeamId = mvpData[0].team_id;
 
-        if (mvpTeamId !== winningTeamId) {
+        if (mvpTeamId !== winnerId) {
             return {
                 statusCode: 400,
                 headers: {
@@ -87,7 +89,10 @@ exports.handler = async (event) => {
                     mode,
                     match_type,
                     location,
-                    match_mvp
+                    match_mvp,
+                    winner: winnerId,
+                    loser: loserId,
+                    match_type
                 }
             ])
             .select('match_id');
