@@ -1,7 +1,7 @@
 [dev]
   port = 4000
 
-
-
+[build]
+  functions = "netlify/functions" 
 
 
