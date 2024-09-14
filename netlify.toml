@@ -3,11 +3,10 @@
 
 [build]
   functions = "netlify/functions"
-  publish = "dist"  # Asegúrate de especificar correctamente el directorio de salida del frontend, si es necesario
 
 [[redirects]]
-  from = "/.netlify/functions/*"
-  to = "/.netlify/functions/:splat"
+  from = "/netlify/functions/*"
+  to = "/netlify/functions/:splat"
   status = 200
 
 
