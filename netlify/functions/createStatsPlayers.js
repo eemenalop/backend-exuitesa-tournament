@@ -26,7 +26,20 @@ exports.handler = async (event) => {
     }
 
     try {
-        const { match_id, player_id } = JSON.parse(event.body);
+        const { match_id,
+            player_id,
+            points,
+            assists,
+            rebounds,
+            steals,
+            blocks,
+            turnovers,
+            fga,
+            fgm,
+            threepta,
+            threeptm,
+            fta,
+            ftm } = JSON.parse(event.body);
 
         if (!match_id) {
             return {
@@ -36,12 +49,25 @@ exports.handler = async (event) => {
             };
         }
 
-        const {data, error} = await supabase
-        .from('players_matches_stats')
-        .insert([{
-            match_id,
-            player_id,
-        }])
+        const { data, error } = await supabase
+            .from('players_matches_stats')
+            .insert([{
+                match_id,
+                player_id,
+                points,
+                assists,
+                rebounds,
+                steals,
+                blocks,
+                turnovers,
+                fga,
+                fgm,
+                threepta,
+                threeptm,
+                fta,
+                ftm
+            }])
+            .select('match_stats_id')
 
         const matchStatId = data[0].match_stats_id
 
@@ -49,16 +75,16 @@ exports.handler = async (event) => {
             throw new Error(error.message)
         }
 
-        return{
-            statusCode:200,
+        return {
+            statusCode: 200,
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            body: JSON.stringify({message: 'Team created successfully', matchStatId})
+            body: JSON.stringify({ message: 'Stats created successfully', matchStatId })
         }
-        
+
 
     } catch (error) {
         console.error('Error general:', error);
