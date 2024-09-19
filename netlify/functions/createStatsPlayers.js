@@ -42,7 +42,9 @@ exports.handler = async (event) => {
             match_id,
             player_id,
         }])
+        .select('match_stats_id')
 
+        console.log(error)
         const matchStatId = data[0].match_stats_id
 
         if (error) {
