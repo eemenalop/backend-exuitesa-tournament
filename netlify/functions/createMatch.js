@@ -30,6 +30,19 @@ exports.handler = async (event) => {
         const { team1_id, team2_id, score_team1, score_team2,
             match_date_time, mode, location, match_mvp, match_type } = JSON.parse(event.body)
 
+
+            if (team1_id === team2_id) {
+                return {
+                    statusCode: 400,
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                    },
+                    body: JSON.stringify({ error: 'Los equipos no pueden ser iguales' })
+                };
+            }
+
         //checking the winning team
         let winnerId, loserId;
 
@@ -51,8 +64,10 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ Error: 'El partido no puede terminar empate' })
             }
         }
+        
 
         //checking that the inserted MVP is from the winning team
+        if(match_mvp){
         const { data: mvpData, error: mvpError } = await supabase
             .from('players')
             .select('team_id, player_id, player_name')
@@ -61,8 +76,6 @@ exports.handler = async (event) => {
         if (mvpError) {
             throw new Error(mvpError.message)
         }
-
-
         if (!mvpData || mvpData.length === 0) {
             return {
                 statusCode: 400,
@@ -74,6 +87,7 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ error: 'El jugador no existe' })
             };
         }
+    
 
         const mvpTeamId = mvpData[0].team_id;
 
@@ -90,6 +104,7 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ error: 'El MVP debe ser del equipo ganador' })
             };
         }
+    }
 
         const { data: matchData, error: matchError } = await supabase
             .from('matches')
@@ -103,7 +118,7 @@ exports.handler = async (event) => {
                     mode,
                     match_type,
                     location,
-                    match_mvp,
+                    match_mvp: match_mvp || null,
                     winner: winnerId,
                     loser: loserId,
                     match_type
