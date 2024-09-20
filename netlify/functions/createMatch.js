@@ -55,12 +55,13 @@ exports.handler = async (event) => {
         //checking that the inserted MVP is from the winning team
         const { data: mvpData, error: mvpError } = await supabase
             .from('players')
-            .select('team_id')
+            .select('team_id, player_id, player_name')
             .eq('player_id', match_mvp);
 
         if (mvpError) {
             throw new Error(mvpError.message)
         }
+
 
         if (!mvpData || mvpData.length === 0) {
             return {
@@ -76,7 +77,9 @@ exports.handler = async (event) => {
 
         const mvpTeamId = mvpData[0].team_id;
 
-        if (mvpTeamId !== winnerId) {
+        console.log(`Equipo ganador ${winnerId} y el MVP del partido ${mvpData[0].player_name} con el team_id: ${mvpData[0].team_id}`);
+
+        if (Number(mvpTeamId) !== Number(winnerId)) {
             return {
                 statusCode: 400,
                 headers: {
