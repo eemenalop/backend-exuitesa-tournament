@@ -16,23 +16,47 @@ exports.handler = async (event) => {
     }
 
     const matchType = event.queryStringParameters.match_type;
+    const match_id = event.queryStringParameters.match_id;
     try {
         let data;
         let error;
 
-        if (matchType) {
-        ({ data, error } = await supabase
-            .from('matches')
-            .select(`
+        if (matchType && match_id) {
+            // Filtrar por ambos matchType y match_id
+            ({ data, error } = await supabase
+                .from('matches')
+                .select(`
                     *,
                     team1:team1_id (team_name),
                     team2:team2_id (team_name)
                 `)
-            .eq('match_type', matchType));
+                .eq('match_type', matchType)
+                .eq('match_id', match_id)); // Filtrar por match_id también
+        } else if (matchType) {
+            // Filtrar solo por matchType
+            ({ data, error } = await supabase
+                .from('matches')
+                .select(`
+                    *,
+                    team1:team1_id (team_name),
+                    team2:team2_id (team_name)
+                `)
+                .eq('match_type', matchType));
+        } else if (match_id) {
+            // Filtrar solo por match_id
+            ({ data, error } = await supabase
+                .from('matches')
+                .select(`
+                    *,
+                    team1:team1_id (team_name),
+                    team2:team2_id (team_name)
+                `)
+                .eq('match_id', match_id));
         } else {
-        ({ data, error } = await supabase
-            .from('matches')
-            .select(`
+            // Si no hay parámetros, obtener todos los datos
+            ({ data, error } = await supabase
+                .from('matches')
+                .select(`
                     *,
                     team1:team1_id (team_name),
                     team2:team2_id (team_name)
