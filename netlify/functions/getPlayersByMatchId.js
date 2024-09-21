@@ -6,6 +6,11 @@ exports.handler = async (event) =>{
       if (!match_id) {
         return {
           statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+          },
           body: JSON.stringify({ error: 'match_id is required' }),
         };
       }
@@ -20,6 +25,11 @@ exports.handler = async (event) =>{
       if (matchError || !match) {
         return {
           statusCode: 404,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+          },
           body: JSON.stringify({ error: `Match not found for match_id: ${match_id}` }),
         };
       }
@@ -41,6 +51,11 @@ exports.handler = async (event) =>{
       if (playersError) {
         return {
           statusCode: 500,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+          },
           body: JSON.stringify({ error: 'Error fetching players' }),
         };
       }
@@ -54,6 +69,11 @@ exports.handler = async (event) =>{
       if (statsError) {
         return {
           statusCode: 500,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+          },
           body: JSON.stringify({ error: `Error fetching player stats: ${statsError.message}` }),
         };
       }
@@ -84,6 +104,11 @@ exports.handler = async (event) =>{
     
       return {
         statusCode: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+          },
         body: JSON.stringify({
           team1Players: playersWithStats.filter(p => p.team_id === team1_id),
           team2Players: playersWithStats.filter(p => p.team_id === team2_id),

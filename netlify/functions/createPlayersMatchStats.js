@@ -44,7 +44,11 @@ exports.handler = async (event) => {
         if (!match_id) {
             return {
                 statusCode: 400,
-                headers,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 body: JSON.stringify({ error: 'match_id is required' })
             };
         }
