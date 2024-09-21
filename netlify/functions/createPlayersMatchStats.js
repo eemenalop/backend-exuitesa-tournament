@@ -52,16 +52,6 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ error: 'match_id is required' })
             };
         }
-
-<<<<<<< HEAD:netlify/functions/createStatsPlayers.js
-        const {data, error} = await supabase
-        .from('players_matches_stats')
-        .insert([{
-            match_id,
-            player_id,
-        }])
-        .select('match_stats_id')
-=======
         const { data, error } = await supabase
             .from('players_matches_stats')
             .insert([{
@@ -81,7 +71,6 @@ exports.handler = async (event) => {
                 ftm
             }])
             .select('match_stats_id')
->>>>>>> dev:netlify/functions/createPlayersMatchStats.js
 
         console.log(error)
         const matchStatId = data[0].match_stats_id
