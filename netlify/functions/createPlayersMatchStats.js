@@ -22,25 +22,13 @@ exports.handler = async (event) => {
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
             body: JSON.stringify({ error: 'Method not Allowed' })
-        }
+        };
     }
 
     try {
-        const { match_id,
-            player_id,
-            points,
-            assists,
-            rebounds,
-            steals,
-            blocks,
-            turnovers,
-            fga,
-            fgm,
-            threepta,
-            threeptm,
-            fta,
-            ftm } = JSON.parse(event.body);
+        const { match_id, stats } = JSON.parse(event.body);
 
+        // Validar que el match_id esté presente
         if (!match_id) {
             return {
                 statusCode: 400,
@@ -53,30 +41,32 @@ exports.handler = async (event) => {
             };
         }
 
+        // Recorrer el objeto de stats y preparar los datos para la inserción
+        const statsArray = Object.keys(stats).map(player_id => ({
+            match_id,
+            player_id: parseInt(player_id, 10), // Convertir el player_id a número
+            points: stats[player_id].points || 0,
+            assists: stats[player_id].assists || 0,
+            rebounds: stats[player_id].rebounds || 0,
+            steals: stats[player_id].steals || 0,
+            blocks: stats[player_id].blocks || 0,
+            turnovers: stats[player_id].turnovers || 0,
+            fga: stats[player_id].fga || 0,
+            fgm: stats[player_id].fgm || 0,
+            threepta: stats[player_id].threepta || 0,
+            threeptm: stats[player_id].threeptm || 0,
+            fta: stats[player_id].fta || 0,
+            ftm: stats[player_id].ftm || 0
+        }));
+
+        // Insertar todas las estadísticas de una vez
         const { data, error } = await supabase
             .from('players_matches_stats')
-            .insert([{
-                match_id,
-                player_id,
-                points,
-                assists,
-                rebounds,
-                steals,
-                blocks,
-                turnovers,
-                fga,
-                fgm,
-                threepta,
-                threeptm,
-                fta,
-                ftm
-            }])
-            .select('match_stats_id')
-
-        const matchStatId = data[0].match_stats_id
+            .insert(statsArray)
+            .select('match_stats_id');
 
         if (error) {
-            throw new Error(error.message)
+            throw new Error(error.message);
         }
 
         return {
@@ -86,9 +76,8 @@ exports.handler = async (event) => {
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            body: JSON.stringify({ message: 'Stats created successfully', matchStatId })
-        }
-
+            body: JSON.stringify({ message: 'Stats created successfully', data })
+        };
 
     } catch (error) {
         console.error('Error general:', error);
