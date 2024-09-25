@@ -27,7 +27,7 @@ exports.handler = async (event) => {
     const player_id = parseInt(event.path.split('/').pop(), 10);
     const { player_name, team_id, position, number, player_photo } = JSON.parse(event.body);
 
-
+    //comentario prueba
     if (!player_name || !team_id || !position || !number) {
         return {
             statusCode: 400,
