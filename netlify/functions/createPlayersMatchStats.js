@@ -59,7 +59,7 @@ exports.handler = async (event) => {
             ftm: stats[player_id].ftm || 0
         }));
 
-        // Insertar todas las estadísticas de una vez
+
         const { data, error } = await supabase
             .from('players_matches_stats')
             .insert(statsArray)
