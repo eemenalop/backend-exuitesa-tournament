@@ -14,12 +14,12 @@ exports.handler = async (event) => {
                 player: player_id (team_id, player_name),
                 match_details: match_id (
                     match_date_time,
-                    team1: team1_id(team_name),
-                    team2: team2_id(team_name),
+                    team1: team1_id(team_id, team_name),
+                    team2: team2_id(team_id, team_name),
                     match_type
                 )
             `);
-        
+
         // Aplicar filtros
         if (match_id) {
             query.eq('match_id', match_id);
