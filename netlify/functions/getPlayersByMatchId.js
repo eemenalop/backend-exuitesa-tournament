@@ -87,6 +87,7 @@ exports.handler = async (event) =>{
           steals: 0,
           blocks: 0,
           turnovers: 0,
+          fouls: 0,
           fga: 0,
           fgm: 0,
           threepta: 0,
