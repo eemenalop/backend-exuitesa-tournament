@@ -27,8 +27,8 @@ exports.handler = async (event) => {
                 .from('matches')
                 .select(`
                     *,
-                    team1:team1_id (team_name),
-                    team2:team2_id (team_name)
+                    team1:team1_id (team_name, logo_url),
+                    team2:team2_id (team_name, logo_url)
                 `)
                 .eq('match_type', matchType)
                 .eq('match_id', match_id)); // Filtrar por match_id también
@@ -38,8 +38,8 @@ exports.handler = async (event) => {
                 .from('matches')
                 .select(`
                     *,
-                    team1:team1_id (team_name),
-                    team2:team2_id (team_name)
+                    team1:team1_id (team_name, logo_url),
+                    team2:team2_id (team_name, logo_url)
                 `)
                 .eq('match_type', matchType));
         } else if (match_id) {
@@ -48,8 +48,8 @@ exports.handler = async (event) => {
                 .from('matches')
                 .select(`
                     *,
-                    team1:team1_id (team_name),
-                    team2:team2_id (team_name)
+                    team1:team1_id (team_name, logo_url),
+                    team2:team2_id (team_name, logo_url)
                 `)
                 .eq('match_id', match_id));
         } else {
@@ -58,8 +58,8 @@ exports.handler = async (event) => {
                 .from('matches')
                 .select(`
                     *,
-                    team1:team1_id (team_name),
-                    team2:team2_id (team_name)
+                    team1:team1_id (team_name, logo_url),
+                    team2:team2_id (team_name, logo_url)
                 `));
         }
 

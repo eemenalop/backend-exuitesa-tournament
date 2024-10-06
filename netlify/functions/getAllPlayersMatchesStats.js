@@ -11,7 +11,7 @@ exports.handler = async (event) => {
             ({ data, error } = await supabase
                 .from('players_matches_stats')
                 .select(`*, 
-                    player: player_id (player_name),
+                    player: player_id (team_id, player_name),
                     match_details: match_id (
                         match_date_time,
                         team1: team1_id(team_name),
@@ -24,7 +24,7 @@ exports.handler = async (event) => {
             ({ data, error } = await supabase
                 .from('players_matches_stats')
                 .select(`*, 
-                    player: player_id (player_name),
+                    player: player_id (team_id, player_name),
                     match_details: match_id (
                         match_date_time,
                         team1: team1_id(team_name),
