@@ -14,8 +14,8 @@ exports.handler = async (event) => {
     }
 
 
-    const { points, assists, rebounds, steals, blocks, turnovers,
-        fga, fgm, threeptm, threepta, ftm, fta } = JSON.parse(event.body);
+    const { points, assists, rebounds, steals, blocks, turnovers/*,
+        fga, fgm, threeptm, threepta, ftm, fta*/ } = JSON.parse(event.body);
 
     const { data: statsData, error: statsError } = await supabase
         .from('players_matches_stats')
@@ -26,12 +26,13 @@ exports.handler = async (event) => {
             steals,
             blocks,
             turnovers,
-            fga,
+            fouls,
+            /*fga,
             fgm,
             threeptm,
             threepta,
             ftm,
-            fta
+            fta*/
         }])
 
     if (statsError) {
