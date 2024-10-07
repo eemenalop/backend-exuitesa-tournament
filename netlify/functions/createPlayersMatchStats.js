@@ -51,12 +51,13 @@ exports.handler = async (event) => {
             steals: stats[player_id].steals || 0,
             blocks: stats[player_id].blocks || 0,
             turnovers: stats[player_id].turnovers || 0,
-            fga: stats[player_id].fga || 0,
+            fouls: stats[player_id].fouls || 0
+            /*fga: stats[player_id].fga || 0,
             fgm: stats[player_id].fgm || 0,
             threepta: stats[player_id].threepta || 0,
             threeptm: stats[player_id].threeptm || 0,
             fta: stats[player_id].fta || 0,
-            ftm: stats[player_id].ftm || 0
+            ftm: stats[player_id].ftm || 0*/
         }));
 
 
