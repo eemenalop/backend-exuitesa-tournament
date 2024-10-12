@@ -2,7 +2,7 @@ const supabase = require('../../config.js');
 
 exports.handler = async (event) => {
     try {
-        // Obtenemos los parámetros desde la query string
+        // Obtenemos los parámetros desde la query string ...
         const matchType = event.queryStringParameters.match_type;
         const teamId = event.queryStringParameters.team_id;
         const playerId = event.queryStringParameters.player_id;
