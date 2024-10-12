@@ -22,7 +22,7 @@ exports.handler = async (event) => {
         const { data: statsData, error } = await supabase.rpc('calculate_stats_per_game', {
             match_type_input: matchType,
             stat_type_input: statType
-        }).limit(10);
+        });
 
         if (error) throw error;
 
